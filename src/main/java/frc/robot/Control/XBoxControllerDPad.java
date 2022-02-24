@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * One of the four arms of a {@link XboxControllerEE.DPad} that gets its state from an {@link XboxControllerEE}.
  */
-public class XBoxControllerDPad extends Trigger
+public class XboxControllerDPad extends Trigger
 {
 
     private final XboxControllerEE m_controller;
@@ -24,7 +24,7 @@ public class XBoxControllerDPad extends Trigger
      * @param ctrlr   The XboxController object that has that DPad
      * @param dpadArm The DPad arm
      */
-    public XBoxControllerDPad(XboxControllerEE ctrlr, XboxControllerEE.DPad dpadArm)
+    public XboxControllerDPad(XboxControllerEE ctrlr, XboxControllerEE.DPad dpadArm)
     {
         m_controller = ctrlr;
         m_DPadValue = dpadArm.value;

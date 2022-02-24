@@ -6,14 +6,24 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Climber.ClimberSubsystem;
-import frc.robot.Climber.ExtendClimber;
-import frc.robot.Control.XBoxControllerDPad;
+import frc.robot.subsystems.Climber.A0_CalibrateClimber;
+import frc.robot.subsystems.Climber.A1_PrepareToClimb;
+import frc.robot.subsystems.Climber.A2_LiftToBar;
+import frc.robot.subsystems.Climber.A3_ReachToNextBar;
+import frc.robot.subsystems.Climber.A4_HookToNextBar;
+import frc.robot.subsystems.Climber.ClimberSubsystem;
+import frc.robot.subsystems.Climber.MagicClimbByDash;
+import frc.robot.subsystems.Climber.MagicClimbByStick;
+import frc.robot.subsystems.Climber.ManualClimbByStick;
+//import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Control.XboxControllerDPad;
+import frc.robot.Control.XboxControllerButton;
 import frc.robot.Control.XboxControllerEE;
 
 /**
@@ -23,18 +33,38 @@ import frc.robot.Control.XboxControllerEE;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
+  //private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final XboxControllerEE m_operatorController = new XboxControllerEE(1);
-  Compressor pcmCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
-
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_climberSubsystem.setDefaultCommand(new ExtendClimber(m_climberSubsystem, 
-                                        () -> m_operatorController.getRightY()));
+
+    new Pneumactics();
+  
+    // Detect if controllers are missing / Stop multiple warnings
+    DriverStation.silenceJoystickConnectionWarning(DriveConstants.PRACTICE);
 
     // Configure the button bindings
     configureButtonBindings();
+
+    m_climberSubsystem.setDefaultCommand(new ManualClimbByStick(m_climberSubsystem, 
+                                        () -> m_operatorController.getRightY()));
+
+    // Make the Climb Sequence commands available on SmartDash
+    SmartDashboard.putData(new A0_CalibrateClimber(m_climberSubsystem));
+    SmartDashboard.putData(new A1_PrepareToClimb(m_climberSubsystem /*, m_intakeSubsystem */));
+    SmartDashboard.putData(new A2_LiftToBar(m_climberSubsystem));
+    SmartDashboard.putData(new A3_ReachToNextBar(m_climberSubsystem));
+    SmartDashboard.putData(new A4_HookToNextBar(m_climberSubsystem));
+    
+    // Arm Driving Commands
+    SmartDashboard.putData(new ManualClimbByStick(m_climberSubsystem, () -> m_operatorController.getRightY()));
+    SmartDashboard.putData(new MagicClimbByStick(m_climberSubsystem, () -> m_operatorController.getRightY()));
+    SmartDashboard.putData(new MagicClimbByDash(m_climberSubsystem));
+
   }
 
   /**
@@ -44,17 +74,21 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new XBoxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadUp)
-    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::fixedClimberForward, m_climberSubsystem));
-    
-    new XBoxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadDown)
-    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::fixedClimberReverse, m_climberSubsystem));
 
-    new XBoxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadLeft)
-    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::extendingClimberForward, m_climberSubsystem));
+    new XboxControllerButton(m_operatorController, XboxControllerEE.Button.kA)
+    .whenPressed(new InstantCommand(m_climberSubsystem::zeroSensors));
+        
+    new XboxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadUp)
+    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::fixedClimberVertical));
     
-    new XBoxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadRight)
-    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::extendingClimberReverse, m_climberSubsystem));
+    new XboxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadDown)
+    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::fixedClimberAngled));
+
+    new XboxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadLeft)
+    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::extendingClimberAngled));
+    
+    new XboxControllerDPad(m_operatorController, XboxControllerEE.DPad.kDPadRight)
+    .whileActiveContinuous(new InstantCommand(m_climberSubsystem::extendingClimberVertical));
   }
 
   /**

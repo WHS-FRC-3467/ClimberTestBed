@@ -13,19 +13,19 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * One of the four arms of a {@link DPad} that gets its state from an {@link XboxController}.
  */
-public class XBoxControllerTrigger extends Trigger
+public class XboxControllerTrigger extends Trigger
 {
 
     private final XboxControllerEE m_controller;
     private final int m_axis;
 
     /**
-     * Create a DPad object for triggering commands.
+     * Create an object treating the controller triggers as buttons.
      *
      * @param ctrlr   The XboxController object that has that DPad
      * @param dpadArm The DPad arm
      */
-    public XBoxControllerTrigger(XboxControllerEE ctrlr, XboxController.Axis trigger)
+    public XboxControllerTrigger(XboxControllerEE ctrlr, XboxController.Axis trigger)
     {
         m_controller = ctrlr;
         m_axis = trigger.value;
