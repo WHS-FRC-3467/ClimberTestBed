@@ -33,32 +33,42 @@
     },
     "###/SmartDashboard/A0_CalibrateClimber": {
       "Collapsed": "0",
-      "Pos": "121,61",
+      "Pos": "353,36",
       "Size": "163,80"
     },
     "###/SmartDashboard/A1_PrepareToClimb": {
       "Collapsed": "0",
-      "Pos": "129,151",
+      "Pos": "349,124",
       "Size": "148,80"
     },
     "###/SmartDashboard/A2_LiftToBar": {
       "Collapsed": "0",
-      "Pos": "136,245",
+      "Pos": "346,209",
       "Size": "109,80"
+    },
+    "###/SmartDashboard/A3_ReachToNextBar": {
+      "Collapsed": "0",
+      "Pos": "346,299",
+      "Size": "148,80"
+    },
+    "###/SmartDashboard/A4_HookToNextBar": {
+      "Collapsed": "0",
+      "Pos": "343,390",
+      "Size": "140,80"
     },
     "###/SmartDashboard/MagicClimbByDash": {
       "Collapsed": "0",
-      "Pos": "301,470",
+      "Pos": "547,473",
       "Size": "140,80"
     },
     "###/SmartDashboard/MagicClimbByStick": {
       "Collapsed": "0",
-      "Pos": "297,382",
+      "Pos": "544,387",
       "Size": "148,80"
     },
     "###/SmartDashboard/ManualClimbByStick": {
       "Collapsed": "0",
-      "Pos": "294,295",
+      "Pos": "548,304",
       "Size": "155,80"
     },
     "###FMS": {
@@ -69,12 +79,12 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "165,551",
-      "Size": "976,278"
+      "Size": "976,82"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "500,76",
-      "Size": "750,725"
+      "Pos": "781,28",
+      "Size": "504,798"
     },
     "###Other Devices": {
       "Collapsed": "0",
@@ -83,8 +93,8 @@
     },
     "###Solenoids": {
       "Collapsed": "0",
-      "Pos": "290,20",
-      "Size": "201,268"
+      "Pos": "546,28",
+      "Size": "246,268"
     },
     "###System Joysticks": {
       "Collapsed": "0",

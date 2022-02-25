@@ -62,12 +62,12 @@ public final class Constants {
         //public static final PneumaticsModuleType PMType = PneumaticsModuleType.REVPH;
         public static final PneumaticsModuleType PMType = PneumaticsModuleType.CTREPCM;
 
-     //   public static final int IntakeForwardSoleniod = 0;
-     //   public static final int IntakeReverseSoleniod = 1;
-        public static final int FixedClimberAngledSoleniod = 0;
-        public static final int FixedClimberVerticalSoleniod = 1;
-        public static final int ExtendingClimberVerticalSoleniod = 2;
-        public static final int ExtendingClimberAngledSoleniod = 3;
+     //   public static final int IntakeForwardSolenoid = 0;
+     //   public static final int IntakeReverseSolenoid = 1;
+        public static final int FixedClimberVerticalSolenoid = 0;
+        public static final int FixedClimberAngledSolenoid = 1;
+        public static final int ExtendingClimberAngledSolenoid = 2;
+        public static final int ExtendingClimberVerticalSolenoid = 3;
 
     }
     
@@ -188,14 +188,14 @@ public final class Constants {
          * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
          * 
          * 	                                    			   kP   kI   kD   kF   Iz   PeakOut */
-        public final static Gains kGains_Distance = new Gains( 0.9, 0.0, 0.0, .05, 100, 1.00 );
+        public final static Gains kGains_Distance = new Gains( 0.5, 0.0, 0.01, .05, 100, 1.00 );
         public final static Gains kGains_Turning  = new Gains( 0.2, 0.0, 0.0, 0.0, 200, 1.00 );
 	
 	    /* Motor neutral dead-band : Range 0.001 -> 0.25 */
 	    public final static double kNeutralDeadband = 0.001;
 
 	    /* Current Limit for arm calibration */
-        public final static double kCalibCurrentLimit = 20.0;
+        public final static double kCalibCurrentLimit = 10.0;
 
         /**
     	 * Set to zero to skip waiting for confirmation.
@@ -204,15 +204,17 @@ public final class Constants {
 	    public final static int kTimeoutMs = 30;
 
         // Motion Magic constants
-        public static final int kMotionCruiseVelocity = 14000;
-        public static final int kMotionAcceleration = 10000;
+        public static final int kMotionCruiseVelocity = 15000;
+        public static final int kMotionAcceleration = 15000;
         public final static int kCurveSmoothing = 0;  /* Valid values: 0 -> 8 */
-        public static final int kTolerance = 10;
+        public static final int kTolerance = 500;
 
         // Setpoints (in encoder ticks) (not tuned)
-        public static final double kRetractedPostion = 0.0;
-        public static final double kExtendedPosition = 200000.0;
-        public static final double kExtendedAboveBar = 20000.0;
+        public static final double kClimbingRetractedPostion = 3000.0;
+        public static final double kRestingRetractedPostion = 4000.0;
+        public static final double kExtendedAboveBar = 50000.0;
+        public static final double kFixedArmsFree = 100000.0;
+        public static final double kFullExtendedPosition = 200000.0;
 
     }
 

@@ -52,6 +52,7 @@
       "/SmartDashboard/A2_LiftToBar": "Command",
       "/SmartDashboard/A3_ReachToNextBar": "Command",
       "/SmartDashboard/A4_HookToNextBar": "Command",
+      "/SmartDashboard/InstantCommand": "Command",
       "/SmartDashboard/MagicClimbByDash": "Command",
       "/SmartDashboard/MagicClimbByStick": "Command",
       "/SmartDashboard/ManualClimbByStick": "Command",
@@ -74,6 +75,16 @@
         }
       },
       "/SmartDashboard/A2_LiftToBar": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/A3_ReachToNextBar": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/A4_HookToNextBar": {
         "window": {
           "visible": true
         }
@@ -102,5 +113,11 @@
       },
       "open": true
     }
+  },
+  "sourceNames": {
+    "Solenoid[0,0]": "FixedArmVertical",
+    "Solenoid[0,1]": "FixedArmAngled",
+    "Solenoid[0,2]": "ExtendArmAngled",
+    "Solenoid[0,3]": "ExtendArmVertical"
   }
 }

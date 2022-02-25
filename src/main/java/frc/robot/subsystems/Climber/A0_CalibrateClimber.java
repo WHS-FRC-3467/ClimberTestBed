@@ -26,6 +26,7 @@ public class A0_CalibrateClimber extends CommandBase {
     m_leftDone = false;
     m_rightDone = false;
     m_finished = false;
+    m_timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,9 +47,8 @@ public class A0_CalibrateClimber extends CommandBase {
     if (m_leftDone && m_rightDone) {
       // Start timer
       m_timer.start();
-      
       // Wait for a minimum of 1 seconds
-      if (m_timer.hasElapsed(1.0)) {
+      if (m_timer.hasElapsed(2.0)) {
         m_finished = true;
       }
     } 
@@ -59,6 +59,7 @@ public class A0_CalibrateClimber extends CommandBase {
   public void end(boolean interrupted) {
     m_climber.adjustArmsManually(0.0);
     m_climber.zeroSensors();
+    m_timer.stop();
   }
 
   // Returns true when the command should end.

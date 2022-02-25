@@ -18,23 +18,19 @@ public class ManualClimbByStick extends CommandBase {
     addRequirements(m_climber);
   }
 
-// Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-// Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climber.adjustArmsManually((-1.0) * modifyAxis(m_speed.getAsDouble()));
+    m_climber.adjustArmsManually(modifyAxis(m_speed.getAsDouble()));
   }
 
-// Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_climber.adjustArmsManually(0.0);
   }
 
-// Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

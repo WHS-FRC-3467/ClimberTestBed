@@ -18,15 +18,17 @@ public class MagicClimbByStick extends CommandBase {
     }
     
     public void initialize() {
-        m_climber.zeroSensors();
+        //m_climber.zeroSensors();
     }
 
    @Override
     public void execute() {
 
         // Multiply modified stick by the total range of positions to get target position
-        double setpoint = (-1.0) * modifyAxis(m_position.getAsDouble()) *
-         (ClimberConstants.kExtendedPosition - ClimberConstants.kRetractedPostion);
+        // Account for non-zero origin
+        double setpoint = modifyAxis(m_position.getAsDouble());
+        setpoint = (setpoint * (ClimberConstants.kFullExtendedPosition - ClimberConstants.kRestingRetractedPostion)) +
+             ClimberConstants.kRestingRetractedPostion ;
 
         // Can't servo to negative value
         if (setpoint < 0.0) setpoint = 0.0;

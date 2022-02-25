@@ -61,9 +61,11 @@ public class RobotContainer {
     SmartDashboard.putData(new A4_HookToNextBar(m_climberSubsystem));
     
     // Arm Driving Commands
-    SmartDashboard.putData(new ManualClimbByStick(m_climberSubsystem, () -> m_operatorController.getRightY()));
-    SmartDashboard.putData(new MagicClimbByStick(m_climberSubsystem, () -> m_operatorController.getRightY()));
+    SmartDashboard.putData(new ManualClimbByStick(m_climberSubsystem, () -> (-1.0)*m_operatorController.getRightY()));
+    SmartDashboard.putData(new MagicClimbByStick(m_climberSubsystem, () -> (-1.0)*m_operatorController.getRightY()));
     SmartDashboard.putData(new MagicClimbByDash(m_climberSubsystem));
+
+    SmartDashboard.putData(new InstantCommand(m_climberSubsystem::zeroSensors, m_climberSubsystem));
 
   }
 

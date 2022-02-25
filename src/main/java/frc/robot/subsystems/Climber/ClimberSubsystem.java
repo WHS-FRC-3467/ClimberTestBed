@@ -7,8 +7,8 @@ package frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.CanConstants;
 import frc.robot.Constants.PHConstants;
 import frc.robot.sim.PhysicsSim;
@@ -17,9 +17,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
   // Solenoid control
   DoubleSolenoid m_fixedClimberPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-      PHConstants.FixedClimberAngledSoleniod, PHConstants.FixedClimberVerticalSoleniod);
+      PHConstants.FixedClimberVerticalSolenoid, PHConstants.FixedClimberAngledSolenoid);
   DoubleSolenoid m_extendingClimberPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-      PHConstants.ExtendingClimberVerticalSoleniod, PHConstants.ExtendingClimberAngledSoleniod);
+      PHConstants.ExtendingClimberAngledSolenoid, PHConstants.ExtendingClimberVerticalSolenoid);
 
   // Climber Winch Motors
   TwinTalonFXMech m_talonMech = new TwinTalonFXMech(CanConstants.ClimberLeft, CanConstants.ClimberRight);

@@ -10,8 +10,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 // import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
+//import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+//import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -20,8 +20,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
+//import edu.wpi.first.util.sendable.Sendable;
+//import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Constants.ClimberConstants;
@@ -33,7 +33,8 @@ import frc.robot.sim.PhysicsSim;
  * /
 
 /** Add your docs here. */
-public class TwinTalonFXMech implements Sendable {
+//public class TwinTalonFXMech implements Sendable {
+public class TwinTalonFXMech {
 
     /* Enable SmartDash Output? */
 	boolean m_debugging = true;	
@@ -72,11 +73,13 @@ public class TwinTalonFXMech implements Sendable {
 		
 		/* Configure the left Talon's selected sensor as local Integrated Sensor */
 		m_leftConfig.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor.toFeedbackDevice();	// Local Feedback Source
+		m_leftConfig.primaryPID.selectedFeedbackCoefficient = 1.0;
 
 		/* Configure the Remote (left) Talon's selected sensor as a remote sensor for the right Talon */
 	//	m_rightConfig.remoteFilter0.remoteSensorDeviceID = m_leftFollower.getDeviceID(); // Device ID of Source
 	//	m_rightConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.TalonFX_SelectedSensor; // Remote Feedback Source
 		m_rightConfig.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor.toFeedbackDevice();
+		m_rightConfig.primaryPID.selectedFeedbackCoefficient = 1.0;
 
 		/* Now that the Left sensor can be used by the master Talon,
 		 * set up the Left (Aux) and Right (Master) distance into a single
@@ -167,18 +170,11 @@ public class TwinTalonFXMech implements Sendable {
         // m_rightMaster.setSensorPhase(true);
 		
 		/* Set status frame periods to ensure we don't have stale data */
-		m_rightMaster.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 10, ClimberConstants.kTimeoutMs);
-		m_rightMaster.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 10, ClimberConstants.kTimeoutMs);
+		m_rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		m_rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 
-		m_leftFollower.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 10, ClimberConstants.kTimeoutMs);
-		m_leftFollower.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 10, ClimberConstants.kTimeoutMs);
+		m_leftFollower.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, ClimberConstants.kTimeoutMs);
 		m_leftFollower.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
-
-		//m_rightMaster.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, ClimberConstants.kTimeoutMs);
-		//m_rightMaster.setStatusFramePeriod(StatusFrame.Status_10_Targets, 20, ClimberConstants.kTimeoutMs);
-		//m_leftFollower.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, ClimberConstants.kTimeoutMs);
-        //m_rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10);
 
         /* Configure Smoothing */
         m_rightMaster.configMotionSCurveStrength(ClimberConstants.kCurveSmoothing);
@@ -210,43 +206,23 @@ public class TwinTalonFXMech implements Sendable {
 		reportMotionToDashboard();
 	}
 
-	public void setCurrentLimits() {
-		/**
-		 * Configure the current limits that will be used
-		 * Stator Current is the current that passes through the motor stators.
-		 *  Use stator current limits to limit rotor acceleration/heat production
-		 * https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#current-limit
-		 * 
-		 *                                                                                       | Trigger | Trigger
-		*                                                                                | Limit |Threshold| Threshold
-		*                                                                        enabled | (amps |  (amps) | Time(s)  */
-		//m_rightMaster.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true,   0,      25,       0.5));
-        //m_leftFollower.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true,  0,      25,       0.5));
 
-		StatorCurrentLimitConfiguration currLimitConfigsToFill = new StatorCurrentLimitConfiguration();
-		m_rightMaster.configGetStatorCurrentLimit(currLimitConfigsToFill);
-		System.out.println(currLimitConfigsToFill.toString());
-	}
+	public boolean calibrate(boolean left) {
 
-	public void disableCurrentLimits() {
+		boolean isFinished = false;
+		double current = 0.0;
+		TalonFX talon = (left ? m_leftFollower : m_rightMaster);
 
-		//m_rightMaster.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 100, 100, 500.0));
-        //m_leftFollower.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 100, 100, 500.0));
-
-		StatorCurrentLimitConfiguration currLimitConfigsToFill = new StatorCurrentLimitConfiguration();
-		m_rightMaster.configGetStatorCurrentLimit(currLimitConfigsToFill);
-		System.out.println(currLimitConfigsToFill.toString());
-	}
-
-	public double calibrate() {
-
-			// Drive arms slowly in
-		m_rightMaster.set(ControlMode.PercentOutput, -0.30);
-		m_leftFollower.set(ControlMode.PercentOutput, -0.30);
-
-		double avgCurrent = (m_rightMaster.getStatorCurrent() + m_leftFollower.getStatorCurrent())/2.0;
-		SmartDashboard.putNumber("Calib Curr", avgCurrent);
-		return avgCurrent;
+		current = talon.getStatorCurrent();
+		SmartDashboard.putNumber("Calib Curr " + (left ? "L: " : "R: "), current);
+		if (current < ClimberConstants.kCalibCurrentLimit) {
+			talon.set(ControlMode.PercentOutput, -0.10);
+			isFinished = false;
+		} else {
+			talon.set(ControlMode.PercentOutput, 0.0);
+			isFinished = true;
+		}
+		return isFinished;
 	}
 
 	public void runMotionMagic() {
@@ -268,6 +244,8 @@ public class TwinTalonFXMech implements Sendable {
 	
 	public void runMotionMagic(double setpoint) {
 	
+    	m_setpoint = setpoint;
+
 		/* Left Talon will follow the Right Talon */
         //m_leftFollower.follow(m_rightMaster, FollowerType.AuxOutput1);
         //m_leftFollower.follow(m_rightMaster, FollowerType.PercentOutput);
@@ -278,8 +256,6 @@ public class TwinTalonFXMech implements Sendable {
 		m_rightMaster.set(TalonFXControlMode.MotionMagic, setpoint);
 		m_leftFollower.set(TalonFXControlMode.MotionMagic, setpoint);
 
-    	m_setpoint = setpoint;
-
 		reportMotionToDashboard();
 	}
 	
@@ -288,15 +264,18 @@ public class TwinTalonFXMech implements Sendable {
 	
 	public boolean isMechOnTarget() {
 	
-		final int kErrThreshold = 10; // how many sensor units until it's close-enough?
+		final double kErrThreshold = 500; // how many sensor units until it's close-enough?
 		final int kLoopsToSettle = 10; // # of loops for which the sensor must be close-enough
 	
 		// Get current target and determine how far we are from it (error)
-		int target = (int) m_rightMaster.getClosedLoopTarget();
-		int error = (int) (target - m_rightMaster.getActiveTrajectoryPosition()); // Use this for Motion Magic
-	
+		double target = m_rightMaster.getClosedLoopTarget();
+		double rightError = (target - m_rightMaster.getActiveTrajectoryPosition()); // Use this for Motion Magic
+		target = m_leftFollower.getClosedLoopTarget();
+		double leftError = (target - m_leftFollower.getActiveTrajectoryPosition()); // Use this for Motion Magic
+		double avgError = (rightError + leftError)/2.0;
+
 		/* Check if closed loop error is within the threshld */
-		if (Math.abs(error) <= kErrThreshold) {
+		if (Math.abs(avgError) <= kErrThreshold) {
 			++m_withinThresholdLoops;
 		} else {
 			m_withinThresholdLoops = 0;
@@ -309,15 +288,26 @@ public class TwinTalonFXMech implements Sendable {
 		// These are things that we cannot change on SDB; just report their current values
 		if (m_debugging && ++debug_counter > 10) {
 			SmartDashboard.putString("Arms ControlMode", getTalonControlMode());
-	    	SmartDashboard.putNumber("Arms Sensor Position", m_rightMaster.getSelectedSensorPosition(0));
+	    	SmartDashboard.putNumber("Right Arm Position", m_rightMaster.getSelectedSensorPosition(0));
+	    	SmartDashboard.putNumber("Left Arm Position", m_leftFollower.getSelectedSensorPosition(0));
 			SmartDashboard.putNumber("Arms MotorOutputPercent", m_rightMaster.getMotorOutputPercent());
-			SmartDashboard.putNumber("Arms Current Draw", m_rightMaster.getStatorCurrent());
+			SmartDashboard.putNumber("Right Arm Draw", m_rightMaster.getStatorCurrent());
+			SmartDashboard.putNumber("Left Arm Draw", m_leftFollower.getStatorCurrent());
 	    	
 			if (m_rightMaster.getControlMode() == ControlMode.MotionMagic) {
 				SmartDashboard.putNumber("Arms Traj. Position", m_rightMaster.getActiveTrajectoryPosition());
 				SmartDashboard.putNumber("Arms ClosedLoopTarget", m_rightMaster.getClosedLoopTarget(0));
 				SmartDashboard.putNumber("Arms ClosedLoopError", m_rightMaster.getClosedLoopError(0));
 			}
+
+			SmartDashboard.putNumber("P", getP());
+			SmartDashboard.putNumber("I", getI());
+			SmartDashboard.putNumber("D", getD());
+			SmartDashboard.putNumber("F", getF());
+			SmartDashboard.putNumber("Setpoint", getSetpoint());
+			SmartDashboard.putNumber("Accel", getMMAccel());
+			SmartDashboard.putNumber("Cruise", getMMCruise());
+	  
 			debug_counter = 0;
 		}
 	}
@@ -383,6 +373,7 @@ public class TwinTalonFXMech implements Sendable {
 	private void setMMCruise(double cru)  {m_rightMaster.selectProfileSlot(0, 0); m_rightMaster.configMotionCruiseVelocity(cru);  m_leftFollower.selectProfileSlot(0, 0); m_leftFollower.configMotionCruiseVelocity(cru);}
 	private double getMMCruise()  { return m_rightMaster.configGetParameter(ParamEnum.eMotMag_VelCruise, 0, 0); }
 
+/*
 	@Override
 	public void initSendable(SendableBuilder builder) {
 	  builder.setSmartDashboardType("Robot Preferences");
@@ -394,5 +385,5 @@ public class TwinTalonFXMech implements Sendable {
 	  builder.addDoubleProperty("Accel", this::getMMAccel, this::setMMAccel);
 	  builder.addDoubleProperty("Cruise", this::getMMCruise, this::setMMCruise);
 	}
-
+*/
 }
