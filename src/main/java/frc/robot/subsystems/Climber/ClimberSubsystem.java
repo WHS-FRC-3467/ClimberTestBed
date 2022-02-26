@@ -27,9 +27,6 @@ public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
-    // Display the PID gains on the SDB 
-    // SmartDashboard.putData("Robot Preferences", m_talonMech);
-
     // Zero the encoders
     m_talonMech.zeroSensors();
 
@@ -53,14 +50,6 @@ public class ClimberSubsystem extends SubsystemBase {
   public boolean calibrateArm(boolean left) {
     return m_talonMech.calibrate(left);
   }
-  /*
-  public void setCurrentLimits() {
-    m_talonMech.setCurrentLimits();
-  }
-  public void disableCurrentLimits() {
-    m_talonMech.disableCurrentLimits();
-  }
-  */
 
   /*
    * Motion Magic Extendable Arm Control

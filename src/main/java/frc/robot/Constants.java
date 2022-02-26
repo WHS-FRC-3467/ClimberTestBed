@@ -169,12 +169,22 @@ public final class Constants {
 
     public static final class ShooterConstants {
 
-        public static final double testSpeed = 1000.0;
-        public static final double LowerHubVelocity = 1000.0;
+        public static final double lowerHubVelocity = 1550.0;
+	    public static final double upperHubVelocity = 2600.0;
 
-        public static final int kShooterTolerance = 25;
+        public static final int kShooterTolerance = 100;
         //double _kP, double _kI, double _kD, double _kF, int _kIzone, double _kPeakOutput
-        public static final Gains kGains = new Gains(0.01, 0.0, 0.1, 0.0465, 0,  1.00);
+        public static final Gains kGains = new Gains(0.0, 0.0, 0.0, 0.0, 0,  1.00);
+            
+        public static final double lowerKP = 0.01;
+        public static final double lowerKI = 0.0;
+        public static final double lowerKD = 1.2;
+        public static final double lowerKF = 0.0503;
+
+        public static final double upperKP = 0.01; 
+        public static final double upperKI = 0.0;
+        public static final double upperKD = 1.15;
+        public static final double upperKF = 0.0484;
 	}
 
     public static final class TowerConstants {
@@ -204,8 +214,8 @@ public final class Constants {
 	    public final static int kTimeoutMs = 30;
 
         // Motion Magic constants
-        public static final int kMotionCruiseVelocity = 15000;
-        public static final int kMotionAcceleration = 15000;
+        public static final int kMotionCruiseVelocity = 25000;
+        public static final int kMotionAcceleration = 30000;
         public final static int kCurveSmoothing = 0;  /* Valid values: 0 -> 8 */
         public static final int kTolerance = 500;
 
@@ -213,7 +223,7 @@ public final class Constants {
         public static final double kClimbingRetractedPostion = 3000.0;
         public static final double kRestingRetractedPostion = 4000.0;
         public static final double kExtendedAboveBar = 50000.0;
-        public static final double kFixedArmsFree = 100000.0;
+        public static final double kFixedArmsFree = 60000.0;
         public static final double kFullExtendedPosition = 200000.0;
 
     }

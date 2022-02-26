@@ -35,9 +35,7 @@ public class A2_LiftToBar extends CommandBase {
         m_climber.extendingClimberVertical();
 
         m_timer.start();
-        SmartDashboard.putString("status", "Phase 1");
-        if (m_timer.hasElapsed(5.0)) {
-          SmartDashboard.putString("status", "Phase 1 - Complete");
+        if (m_timer.hasElapsed(1.0)) {
           m_climbPhase = 2;
           m_timer.stop();
           m_timer.reset();
@@ -47,9 +45,7 @@ public class A2_LiftToBar extends CommandBase {
       case 2:
         // Retract Arms to Minimum Length
         m_climber.adjustArmsMagically(ClimberConstants.kClimbingRetractedPostion);
-        SmartDashboard.putString("status", "Phase 2");
         if (m_climber.areArmsOnTarget()) {
-          SmartDashboard.putString("status", "Phase 2 - On Target");
           m_climbPhase = 3;
         }
         break;
@@ -57,9 +53,7 @@ public class A2_LiftToBar extends CommandBase {
       case 3:
         // Extend arms above the bar so the fixed hooks settle onto bar  
         m_climber.adjustArmsMagically(ClimberConstants.kExtendedAboveBar);
-        SmartDashboard.putString("status", "Phase 3");
         if (m_climber.areArmsOnTarget()) {
-          SmartDashboard.putString("status", "Phase 3 - Finished");
           m_climbPhase = 0;  // Finished
         }
       break;

@@ -12,10 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Climber.A0_CalibrateClimber;
+import frc.robot.subsystems.Climber.A10_DoItAll;
 import frc.robot.subsystems.Climber.A1_PrepareToClimb;
 import frc.robot.subsystems.Climber.A2_LiftToBar;
 import frc.robot.subsystems.Climber.A3_ReachToNextBar;
 import frc.robot.subsystems.Climber.A4_HookToNextBar;
+import frc.robot.subsystems.Climber.A7_ReachAndHook;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 import frc.robot.subsystems.Climber.MagicClimbByDash;
 import frc.robot.subsystems.Climber.MagicClimbByStick;
@@ -59,7 +61,9 @@ public class RobotContainer {
     SmartDashboard.putData(new A2_LiftToBar(m_climberSubsystem));
     SmartDashboard.putData(new A3_ReachToNextBar(m_climberSubsystem));
     SmartDashboard.putData(new A4_HookToNextBar(m_climberSubsystem));
-    
+    SmartDashboard.putData(new A7_ReachAndHook(m_climberSubsystem));
+    SmartDashboard.putData(new A10_DoItAll(m_climberSubsystem));
+        
     // Arm Driving Commands
     SmartDashboard.putData(new ManualClimbByStick(m_climberSubsystem, () -> (-1.0)*m_operatorController.getRightY()));
     SmartDashboard.putData(new MagicClimbByStick(m_climberSubsystem, () -> (-1.0)*m_operatorController.getRightY()));
